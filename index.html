@@ -16,7 +16,7 @@
 <body>
   <header>
     <nav class="nav nav1 my-2">
-      <a class="nav-link nav1" href="#">View Highscores</a>
+      <a class="nav-link nav1 viewHighScoreLink" href="#viewHighScoreLink">View Highscores</a>
       <a class="timer nav-link nav1" style="margin-left:auto;">Time: <span id="seconds">0</span> seconds </a>
     </nav>
   </header>
@@ -38,30 +38,68 @@
       <div class="row">
         <div id=question-header class="col-md-12 mx-auto my-5 text-center" style="font-size:30px;">Question</div>
       </div>
+
       <!-- Choices -->
       <div class="row">
         <div id="choices" class="col-md-6 btn-group-vertical mx-auto">
-          <button type="button" id="choice-button1" class="btn btn-primary my-1 btn1" style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
-          <button type="button" id="choice-button2" class="btn btn-primary my-1 btn1" style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
-          <button type="button" id="choice-button3" class="btn btn-primary my-1 btn1" style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
-          <button type="button" id="choice-button4" class="btn btn-primary my-1 btn1" style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
+          <button type="button" id="choice-button1" class="btn btn-primary my-1 btn1"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
+          <button type="button" id="choice-button2" class="btn btn-primary my-1 btn1"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
+          <button type="button" id="choice-button3" class="btn btn-primary my-1 btn1"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
+          <button type="button" id="choice-button4" class="btn btn-primary my-1 btn1"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button"></button>
         </div>
       </div>
       <div class="row">
         <div id="clickResponse" class="col-md-6 mx-auto text-center my-4" style="font-size:20px; font-style:italic;">
-          
         </div>
       </div>
+    </div>
 
-
-
-
+    <div id="enter-highscore-container" class="container d-none">
+      <div class="row">
+        <div class="col-md-12 mx-auto text-center my-2">
+          <h1>All Done!</h1>
+          <br>
+          <h2>Your Final Score is <span id="posted-score"></span></h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mx-auto my-3">
+          <input type="text" class="form-control enteredName text-center"
+            placeholder="Enter your name to the leader board...">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 mx-auto text-center">
+          <button type="button" id="submit-button" class="btn btn-primary my-3 mx-auto"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button">Submit</button>
+        </div>
+      </div>
     </div>
 
 
-    <div id="highscore-container" class="container d-none">
-      <p>Highschore-Container</p>
+    <div id="highscores-container" class="container d-none">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <h3 class="text-center">High Scores</h3>
+          <div id="highScoreList" class="text-center">
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mx-auto text-center">
+          <button type="button" id="clear-button" class="btn btn-primary my-3 mx-auto"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button">Clear</button>
+          <button type="button" id="back-button" class="btn btn-primary my-3 mx-auto"
+            style="font-size:25px; background-color: darkblue;" href="#" role="button">Back to Quiz</button>
+        </div>
+      </div>
     </div>
+
   </main>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

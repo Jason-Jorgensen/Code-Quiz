@@ -5,9 +5,19 @@ let highScoreContainer= document.getElementById("highscore-container");
 let timerDisplay = document.getElementById("seconds");
 let buttonChoice = document.querySelectorAll(".btn1");
 let clickResponse = document.getElementById("clickResponse");
+let enterHighScoreContainer = document.getElementById("enter-highscore-container");
+let highScoresContainer = document.getElementById("highscores-container");
+let postedScore = document.getElementById("posted-score");
+let enteredName = document.querySelector(".enteredName");
+let submitButton = document.getElementById("submit-button");
+let clearButton = document.getElementById("clear-button");
+let highScoreList = document.getElementById("highScoreList");
+let backToQuiz = document.getElementById("back-button");
+let viewHighScoreLinks = document.querySelector(".viewHighScoreLink");
 var timer = 76;
 var timerId;
 var questionNumber = 0;
+var scores = [];
 
 
 //QUESTIONS
@@ -62,14 +72,14 @@ const questions = [
     },
 ]
 
-
+// Click start to begin Quiz
 function startQuiz() {
     landingContainer.setAttribute("class","container d-none");
     quizContainer.setAttribute("class","container");
     startTime();
     startQuestions();
 }
-
+// Timer function that starts the countdown
 function startTime() {
     timerId = setInterval(function() {
         timer--;
@@ -77,10 +87,11 @@ function startTime() {
 
     if (timer === 0) {
         clearInterval(timerId);
+        endQuiz;
     }
     },1000);
 }
-
+// Adds the question and choices according to the Question number variable.
 function startQuestions() {
     document.getElementById("question-header").innerHTML = questions[questionNumber].title;
     document.getElementById("choice-button1").innerHTML = questions[questionNumber].choice1;
@@ -92,19 +103,19 @@ function startQuestions() {
 for (let i=0; i < buttonChoice.length; i++) {
     buttonChoice[i].onclick = checkChoice;
 }
-
+//gives a one second timeout for correct or incorrect text when answer selected
 function clearClickResponse(){
     setTimeout(function(){
         clickResponse.textContent = " ";
     },1000);    
 }
-
+//waits one second before showing the next question
 function startQuestionsTimeout(){
     setTimeout(function(){
         startQuestions();
     },1000);
 }
-
+//gets the id of the selected button and sends it to checkChoice2.
 function checkChoice() {
     var buttonSelected = this.getAttribute("id"); 
     checkChoice2(buttonSelected);
@@ -112,14 +123,14 @@ function checkChoice() {
 
     if(questionNumber <= questions.length - 1){
         startQuestionsTimeout();
+        
     }
     else{
-        endQuiz();
-        clearInterval(timer)
+        endQuiz()
     }
 
 }
-
+//Checks to see if the selection is correct or not
 function checkChoice2(buttonSelected){
     if (buttonSelected == questions[questionNumber].answer){
         clickResponse.textContent = "Correct!";
@@ -135,23 +146,73 @@ function checkChoice2(buttonSelected){
         }
             
         else{
+            timer=0;
             endQuiz();
+            
         }
 }
 }
+//Ends the quiz by hiding the quiz container and stopping the timer. Also shows the final score and add name user input
+function endQuiz(){
+    quizContainer.setAttribute("class", "container d-none");
+    clearInterval(timerId);
+    enterHighScoreContainer.setAttribute("class","container");
+    postedScore.textContent = timer;
+}
+//Logs the score to local storage
+function logHighScores(){
+    var storedScores = JSON.parse(localStorage.getItem("scores"));
+    if (storedScores !== null) {
+        scores = storedScores;
+    }
+    scores.push(timer + " - " + enteredName.value);
+    localStorage.setItem("scores",JSON.stringify(scores));
+}
+//Renders the high Score by placing it in <p> tags in highscore order.
+function pullHighScores(){
+    var storedScores = JSON.parse(localStorage.getItem("scores"));
+    if (storedScores !== null) {
+        scores = storedScores;
+    }
+    for (let index = 0; index<scores.length; index++){
+        scores.sort();
+        scores.reverse();
+        var score = scores[index];
+        var ul = document.createElement("p");
+        ul.textContent = score;
+        highScoreList.appendChild(ul);
 
-
-
-    // timerId = setInterval(,1000)
-    // timerDisplay.textContent = timer;
-    
-    // for (let i = timer; i>0; i--) {
-    //     setInterval(function() {
-    //     timerDisplay.textContent = i;
-    //     }
-    // }
-    
-
-
+    }
+}
+//calls the Log High Score and Pull High Score functions when submit button pressed.
+function showScores() {
+    logHighScores();
+    enterHighScoreContainer.setAttribute("class","container d-none");
+    highScoresContainer.setAttribute("class","container");
+    pullHighScores();
+}
+//Clears the local storage and empties the HighScore List
+function clearStorage(){
+    localStorage.clear();
+    highScoreList.textContent=" ";
+}
+//Refreshes the page when back to quiz button is selected.
+function refreshPage() {
+    window.location.reload();
+}
+//Hides all containers except for the HighScore Container and stops the clock if pressed during the quiz.
+function viewHighScoreLink(){
+    landingContainer.setAttribute("class","container d-none");
+    quizContainer.setAttribute("class","container d-none");
+    enterHighScoreContainer.setAttribute("class","container d-none");
+    highScoresContainer.setAttribute("class","container");
+    pullHighScores();
+    clearInterval(timerId);
+}
  
+//Actions called when buttons are pressed.
+viewHighScoreLinks.onclick = viewHighScoreLink;
+backToQuiz.onclick = refreshPage;
+clearButton.onclick = clearStorage;
+submitButton.onclick = showScores;
 startButton.onclick = startQuiz;
